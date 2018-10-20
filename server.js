@@ -1,9 +1,13 @@
 var express = require("express");
 var exphbs = require("express-handlebars");
 var logger = require("morgan");
+var bodyParser = require("body-parser");
+
 var PORT = process.env.PORT || 8080;
 
 var app = express();
+
+var Posts = require("./models/Posts")
 
 // serve static content for the app from the "public" directory in the application directory
 app.use(express.static("public"));
