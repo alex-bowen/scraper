@@ -1,0 +1,36 @@
+<body>
+    <div class="container">
+
+        {{#each post}}
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{this.title}}</h5>
+                <a href={{this.url}} class="card-link">Read on Medium</a>
+                <br><br>
+                <p class="card-text"><strong>Article Summary:</strong> {{this.summary}}</p>
+
+                {{#unless this.note}}
+                <form id="note-form">
+                    <textarea class="form-control" id="submitted-note" placeholder="Type your notes here..."></textarea>
+                    <br>
+                    <button type="button" class="btn btn-note submit-note" data-id={{this._id}}>Save note</button>
+                </form>
+                {{/unless}}
+                
+
+                {{#if this.note}}
+                <button type="button" class="btn view-notes" data-id={{this.note}}>View note</button>
+                <div class="append-here" id="">
+                </div>
+                {{/if}}
+
+
+
+            </div>
+        </div>
+        <br>
+        {{/each}}
+
+    </div>
+</body>

@@ -6,15 +6,18 @@ var axios = require("axios");
 var db = require("../models");
 
 //Connecting to MongoDB
-mongoose.connect(
-    "mongodb://localhost/scraperHomework", { useNewUrlParser: true }
-);
+// mongoose.connect(
+//     "mongodb://localhost/scraperHomework", { useNewUrlParser: true }
+// );
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraperHomework";
+mongoose.connect(MONGODB_URI);
 
 
 module.exports = function (app) {
 
     app.get("/", function (req, res) {
-        db.Posts.find({}, function (error, data) {
+        db.Post.find({}, function (error, data) {
             var hbsObject = {
                 post: data
             };
@@ -22,6 +25,8 @@ module.exports = function (app) {
             res.render("index", hbsObject);
         });
     })
+
+
 
     // scrape  
     app.get("/scrape", function (req, res) {
@@ -31,7 +36,7 @@ module.exports = function (app) {
             // load response to cheerio
             var $ = cheerio.load(response.data);
 
-            $("section.eu").each(function (i, element) {
+            $("section.dd").each(function (i, element) {
 
                 var result = {};
 
@@ -52,7 +57,7 @@ module.exports = function (app) {
                 result.url = fullUrl;
 
 
-                db.Posts.create(result)
+                db.Post.create(result)
                     .then(function (newPost) {
                         // View the added result in the console
                         console.log(newPost);
@@ -71,7 +76,7 @@ module.exports = function (app) {
     // Route for getting all Articles from the db
     app.get("/posts", function (req, res) {
         // Grab every document in the Articles collection
-        db.Posts.find({})
+        db.Post.find({})
             .then(function (results) {
                 // If we were able to successfully find Articles, send them back to the client
                 res.json(results);
@@ -85,7 +90,7 @@ module.exports = function (app) {
 
     // clear
     app.get('/clear', function (req, res) {
-        db.Posts.remove({}, function (err, doc) {
+        db.Post.remove({}, function (err, doc) {
             if (err) {
                 console.log(err);
             } else {
@@ -99,7 +104,7 @@ module.exports = function (app) {
     // this is working // posts are saving
     app.post("/posts/saved/:id", function (req, res) {
         // Use the article id to find and update its saved boolean
-        db.Posts.findOneAndUpdate({ "_id": req.params.id }, { "saved": true })
+        db.Post.findOneAndUpdate({ "_id": req.params.id }, { "saved": true })
             // Execute the above query
             .exec(function (err, data) {
                 // Log any errors
@@ -107,7 +112,6 @@ module.exports = function (app) {
                     console.log(err);
                 }
                 else {
-
                     res.send(data);
                 }
             });
@@ -115,15 +119,63 @@ module.exports = function (app) {
 
 
     app.get('/saved', function (req, res) {
-        db.Posts.find({ "saved": true })
-        .then(function (results) {
-            // If we were able to successfully find Articles, send them back to the client
-            res.json(results);
-        })
-        .catch(function (err) {
-            // If an error occurred, send it to the client
-            res.json(err);
-        });
+        db.Post.find({ saved: true })
+            .then(function (results) {
+                // If we were able to successfully find Articles, send them back to the client
+                var hbsObject = { post: results }
+                res.render("saved", hbsObject);
+                console.log(results);
+            })
+            .catch(function (err) {
+                // If an error occurred, send it to the client
+                res.json(err);
+            });
     });
 
+
+    app.get('/notes/:id', function (req, res) {
+        db.Note.find({_id: req.params.id})
+            .then(function (results) {
+                res.json(results);
+                console.log(results);
+            });
+    });
+
+
+    app.post('/notes/:id', function (req, res) {
+        db.Note.create(req.body)
+            .then(function (newNote) {
+                // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
+                // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+                return db.Post.findOneAndUpdate({ _id: req.params.id }, { note: newNote._id }, {new: true});
+            })
+            .then(function (dbPost) {
+                // If we were able to successfully update an Article, send it back to the client
+                res.json(dbPost);
+            })
+            .catch(function (err) {
+                // If an error occurred, send it to the client
+                res.json(err);
+            });
+    })
+
 };
+
+// // Route for grabbing a specific Article by id, populate it with it's note
+// app.get("/articles/:id", function(req, res) {
+//     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+//     db.Article.findOne({ _id: req.params.id })
+//       // ..and populate all of the notes associated with it
+//       .populate("note")
+//       .then(function(dbArticle) {
+//         // If we were able to successfully find an Article with the given id, send it back to the client
+//         res.json(dbArticle);
+//       })
+//       .catch(function(err) {
+//         // If an error occurred, send it to the client
+//         res.json(err);
+//       });
+//   });
+// comments can be handlebars partial 
+// ajax get notes, displays them with jquery 
+// if no notes, append textarea -- save button --> post to /notes 

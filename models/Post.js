@@ -21,8 +21,12 @@ var PostSchema = new Schema({
     saved: {
         type: Boolean,
         default: false
+    }, 
+    note: {
+        type: Schema.Types.ObjectId,
+        ref: "Note"
     }
 });
 
-var Posts = mongoose.model("Posts", PostSchema);
-module.exports = Posts;
+var Post = mongoose.model("Post", PostSchema);
+module.exports = Post;

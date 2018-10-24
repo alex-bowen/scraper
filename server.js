@@ -4,10 +4,13 @@ var logger = require("morgan");
 var bodyParser = require("body-parser");
 
 var PORT = process.env.PORT || 8080;
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraperHomework";
 
 var app = express();
 
-var Posts = require("./models/Posts")
+var Post = require("./models/Post")
+var Note = require("./models/Note")
+
 
 // serve static content for the app from the "public" directory in the application directory
 app.use(express.static("public"));

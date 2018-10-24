@@ -1,4 +1,4 @@
-module.exports= {
-    Notes: require("./Notes"),
-    Posts: require("./Posts")
+module.exports = {
+    Note: require("./Note"),
+    Post: require("./Post")
 };

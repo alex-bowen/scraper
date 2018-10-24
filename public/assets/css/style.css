@@ -5,8 +5,12 @@ body {
 nav {
     background: black;
     color: white;
-    height: 60px;
-    margin-bottom: 30px;
+    height: 80px;
+    margin-bottom: 36px;
+}
+
+.nav-stuff {
+    margin-top:5px;
 }
 
 .card-title {
@@ -19,12 +23,15 @@ nav {
     border: 1px solid black;
     box-shadow: 9px 9px 0px -3px black;
     padding: 5px;
+    min-height: 230px;
+    margin-bottom: 15px;
 }
 
 button {
     background: rgb(38, 158, 190);
     color:white;
-    margin-right: 25px;
+    margin-right: 28px;
+    border-radius: 1px;
 }
 
 button:hover {
@@ -41,7 +48,8 @@ a:hover {
 
 .logo {
     color:white;
-    margin-right: 30px;
+    margin-right: 40px;
+    font-size: 25px;
 }
 
 .logo:hover {
