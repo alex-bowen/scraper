@@ -1,4 +1,4 @@
-#Medium Scraper
+# Medium Scraper
 
 This web app allows users to scrape articles from Medium's Creativity page and attach notes to saved articles.
 
