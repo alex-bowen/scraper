@@ -1,3 +1,4 @@
+
 $("#home-btn").on("click", function () {
     console.log('clicked')
     $.ajax({
@@ -15,7 +16,11 @@ $("#scrape-btn").on("click", function () {
         url: "/scrape",
     }).then(function (data) {
         console.log(data)
-        window.location = "/"
+        if (!data) {
+            alert("Medium has probably changed their classNames. Feel free to send me a note if you run into this issue");
+        } else {
+            window.location = "/"
+        }
     });
 });
 
