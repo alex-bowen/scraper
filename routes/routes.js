@@ -36,7 +36,7 @@ module.exports = function (app) {
             // load response to cheerio
             var $ = cheerio.load(response.data);
 
-            $("section.dd").each(function (i, element) {
+            $("section.fg").each(function (i, element) {
 
                 var result = {};
 

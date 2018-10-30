@@ -78,7 +78,7 @@ $(".submit-note").on("click", function () {
         method: "POST",
         url: "/notes/" + thisId,
         data: note
-    }).done(function (data) {
+    }).then(function (data) {
         console.log(data);
         location.reload();
     });
