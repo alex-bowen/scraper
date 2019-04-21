@@ -11,8 +11,9 @@ var db = require("../models");
 // );
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraperHomework";
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
+mongoose.set('useCreateIndex', true);
 
 module.exports = function (app) {
 
