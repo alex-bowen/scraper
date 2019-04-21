@@ -17,7 +17,7 @@ $("#scrape-btn").on("click", function () {
     }).then(function (data) {
         console.log(data)
         if (!data) {
-            alert("Medium has probably changed their classNames. Feel free to send me a note if you run into this issue");
+            console.log("error scraping")
         } else {
             window.location = "/"
         }

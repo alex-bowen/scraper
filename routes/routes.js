@@ -41,13 +41,10 @@ module.exports = function (app) {
 
                 var result = {};
 
-                var urlPortion = $(element)
+                var mediumUrl = $(element)
                     .find("a")
                     .attr("href");
 
-                var mediumUrl = "https://medium.com"
-
-                var fullUrl = mediumUrl + urlPortion;
 
                 result.title = $(element)
                     .find("h3")
@@ -55,7 +52,7 @@ module.exports = function (app) {
                 result.summary = $(element)
                     .find("p")
                     .text()
-                result.url = fullUrl;
+                result.url = mediumUrl;
 
 
                 db.Post.create(result)
